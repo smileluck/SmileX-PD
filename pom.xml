@@ -46,6 +46,13 @@
             <version>${mysql-connector.version}</version>
         </dependency>
 
+        <!-- Sqlite -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.21.0.1</version>
+        </dependency>
+
         <!-- Template Enginner -->
         <dependency>
             <groupId>org.freemarker</groupId>
