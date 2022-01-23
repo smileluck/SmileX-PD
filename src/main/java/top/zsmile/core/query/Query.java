@@ -1,5 +1,6 @@
 package top.zsmile.core.query;
 
+import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.TablesModel;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface Query {
      *
      * @param tableName
      */
-    void queryColumns(String tableName);
+    List<ColumnsModel> queryColumns(String tableName);
 
     /**
      * 查询建表语句
