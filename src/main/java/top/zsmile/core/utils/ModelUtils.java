@@ -17,6 +17,7 @@ public class ModelUtils {
             List<ColumnsModel> columnsModels = collect.get(tableName);
             if (columnsModels != null) {
                 tablesModel.setColumnsModelList(columnsModels);
+                continue;
             }
         }
         return tableList;

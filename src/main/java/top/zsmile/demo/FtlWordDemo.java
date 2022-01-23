@@ -4,11 +4,14 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import sun.reflect.annotation.ExceptionProxy;
 import top.zsmile.core.config.FreemakerConfig;
 import top.zsmile.core.constant.DefaultConstants;
+import top.zsmile.core.execute.WordExecute;
 import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.DatabaseModel;
 import top.zsmile.core.model.TablesModel;
+import top.zsmile.core.query.MysqlQuery;
 import top.zsmile.core.utils.ModelUtils;
 import top.zsmile.core.utils.ResultSetUtils;
 
@@ -22,7 +25,7 @@ import java.util.List;
 
 public class FtlWordDemo {
 
-    public static void main(String[] args) {
+    public static void test1() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:mysql://localhost:3306/cloud_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai");
         config.setUsername("root");
@@ -109,4 +112,29 @@ public class FtlWordDemo {
         }
     }
 
+    public static void test2() {
+        MysqlQuery mysqlQuery = new MysqlQuery();
+        List<TablesModel> tablesModels = mysqlQuery.queryTables("geek_shop");
+        List<ColumnsModel> columnsModels = mysqlQuery.queryColumns("geek_shop");
+
+        List mergeList = ModelUtils.mergeTableAndColumn(tablesModels, columnsModels);
+
+        DatabaseModel databaseModel = new DatabaseModel();
+        HashMap<String, Object> dataMap = new HashMap<>();
+        dataMap.put("tables", mergeList);
+        dataMap.put("db", databaseModel);
+
+        WordExecute wordExecute = new WordExecute();
+        wordExecute.executeWord(dataMap);
+    }
+
+    public static void test3() {
+        MysqlQuery mysqlQuery = new MysqlQuery();
+        String sql = mysqlQuery.queryCreateTableSql("geek_shop.tb_order_good");
+        System.out.println(sql);
+    }
+
+    public static void main(String[] args) {
+        test3();
+    }
 }

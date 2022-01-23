@@ -17,14 +17,16 @@ public interface Query {
     /**
      * 查询表结构信息
      *
-     * @param tableName
+     * @param databaseName
      */
-    List<ColumnsModel> queryColumns(String tableName);
+    List<ColumnsModel> queryColumns(String databaseName);
 
     /**
      * 查询建表语句
      *
      * @param tableName
      */
-    void queryCreateTableSql(String tableName);
+    String queryCreateTableSql(String tableName);
+
+
 }

@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.TablesModel;
+import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ResultSetUtils;
 
 import java.sql.Connection;
@@ -15,23 +16,38 @@ import java.util.List;
 public class MysqlQuery implements Query {
     @Override
     public List<TablesModel> queryTables(String databaseName) {
-        return null;
+        Connection connection = null;
+        try {
+            connection = DataSourceUtils.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = "SELECT\n" +
+                    "\tTABLE_NAME as tableName,\n" +
+                    "\tTABLE_COMMENT as tableComment,\n" +
+                    "\tENGINE\n" +
+                    "FROM\n" +
+                    "\tinformation_schema.TABLES\n" +
+                    "WHERE\n" +
+                    "\ttable_schema = \"" + databaseName + "\"\n" +
+                    "ORDER BY\n" +
+                    "\tTABLE_NAME";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            List list = ResultSetUtils.convertClassList(resultSet, TablesModel.class);
+            return list;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        } finally {
+            DataSourceUtils.closeConnection(connection);
+        }
     }
 
     @Override
-    public List<ColumnsModel> queryColumns(String tableName) {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/cloud_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai");
-        config.setUsername("root");
-        config.setPassword("root");
-
-        HikariDataSource hikariDataSource = new HikariDataSource(config);
+    public List<ColumnsModel> queryColumns(String databaseName) {
         Connection connection = null;
         try {
-            connection = hikariDataSource.getConnection();
-
+            connection = DataSourceUtils.getConnection();
             Statement statement = connection.createStatement();
-
             String sql = "SELECT\n" +
                     "\tA.TABLE_NAME as tableName,\n" +
                     "\tA.COLUMN_NAME as columnName,\n" +
@@ -58,19 +74,37 @@ public class MysqlQuery implements Query {
                     "FROM\n" +
                     "\tINFORMATION_SCHEMA. COLUMNS A\n" +
                     "WHERE\n" +
-                    "\tA.TABLE_SCHEMA = \"geek_shop\"";
+                    "\tA.TABLE_SCHEMA = \"" + databaseName + "\"\n" +
+                    "ORDER BY A.TABLE_NAME,A.ORDINAL_POSITION";
             ResultSet resultSet = statement.executeQuery(sql);
-
             List columnList = ResultSetUtils.convertClassList(resultSet, ColumnsModel.class);
             return columnList;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            DataSourceUtils.closeConnection(connection);
         }
     }
 
     @Override
-    public void queryCreateTableSql(String tableName) {
-
+    public String queryCreateTableSql(String tableName) {
+        Connection connection = null;
+        try {
+            String createTableSql = null;
+            connection = DataSourceUtils.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = "SHOW CREATE TABLE " + tableName + ";";
+            ResultSet resultSet = statement.executeQuery(sql);
+            if (resultSet.next()) {
+                createTableSql = resultSet.getString("Create Table");
+            }
+            return createTableSql;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DataSourceUtils.closeConnection(connection);
+        }
     }
 }
