@@ -4,12 +4,11 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import sun.reflect.annotation.ExceptionProxy;
 import top.zsmile.core.config.FreemakerConfig;
 import top.zsmile.core.constant.DefaultConstants;
 import top.zsmile.core.execute.WordExecute;
-import top.zsmile.core.filter.FilterConfig;
-import top.zsmile.core.filter.ProcessFilter;
+import top.zsmile.core.handler.filter.FilterConfig;
+import top.zsmile.core.handler.filter.ProcessFilter;
 import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.DatabaseModel;
 import top.zsmile.core.model.TablesModel;
@@ -262,9 +261,11 @@ public class FtlWordDemo {
 //        list.add("heitan_db");
 //        list.add("heitan_open");
 //        list.add("heitan_pay");
-        list.add("wolf_data_db");
-        test5(list, filterConfig);
+//        list.add("wolf_data_db");
+        list.add("heytalk");
+//        test22(list);
 //
+        test5(list, filterConfig);
 //        System.out.println(list.contains("heitan_pay"));
 //        System.out.println(list.contains("heitan_Pay"));
 //        System.out.println(list.contains("heitan_ay"));
