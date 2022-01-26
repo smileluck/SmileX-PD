@@ -3,7 +3,9 @@ package top.zsmile.core.query;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import top.zsmile.core.model.ColumnsModel;
+import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
+import top.zsmile.core.model.convert.IndexModelConvert;
 import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ResultSetUtils;
 
@@ -20,6 +22,7 @@ public class MysqlQuery implements Query {
         try {
             connection = DataSourceUtils.getConnection();
             Statement statement = connection.createStatement();
+
             String sql = "SELECT\n" +
                     "\tTABLE_NAME as tableName,\n" +
                     "\tTABLE_COMMENT as tableComment,\n" +
@@ -34,12 +37,14 @@ public class MysqlQuery implements Query {
 
             List list = ResultSetUtils.convertClassList(resultSet, TablesModel.class);
             return list;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
             return null;
         } finally {
             DataSourceUtils.closeConnection(connection);
         }
+
     }
 
     @Override
@@ -79,6 +84,7 @@ public class MysqlQuery implements Query {
             ResultSet resultSet = statement.executeQuery(sql);
             List columnList = ResultSetUtils.convertClassList(resultSet, ColumnsModel.class);
             return columnList;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -88,18 +94,39 @@ public class MysqlQuery implements Query {
     }
 
     @Override
-    public String queryCreateTableSql(String tableName) {
+    public String queryCreateTableSql(String databaseName, String tableName) {
         Connection connection = null;
         try {
-            String createTableSql = null;
             connection = DataSourceUtils.getConnection();
             Statement statement = connection.createStatement();
-            String sql = "SHOW CREATE TABLE " + tableName + ";";
+            String createTableSql = null;
+            String sql = "SHOW CREATE TABLE " + databaseName + "." + tableName + ";";
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 createTableSql = resultSet.getString("Create Table");
             }
             return createTableSql;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DataSourceUtils.closeConnection(connection);
+        }
+    }
+
+    @Override
+    public List<IndexModel> queryIndex(String databaseName, String tableName) {
+
+        Connection connection = null;
+        try {
+            connection = DataSourceUtils.getConnection();
+            Statement statement = connection.createStatement();
+
+            String sql = "SHOW INDEX FROM " + databaseName + "." + tableName + ";";
+
+            ResultSet resultSet = statement.executeQuery(sql);
+            List<IndexModel> indexList = ResultSetUtils.convertClassList(resultSet, IndexModel.class, IndexModelConvert.INSTANCE);
+            return indexList;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

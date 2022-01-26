@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SqlReplace implements BaseReplace {
+public class TableNameReplace implements BaseReplace {
 
     private ReplaceConfig replaceConfig;
 
-    public SqlReplace(ReplaceConfig replaceConfig) {
+    public TableNameReplace(ReplaceConfig replaceConfig) {
         this.replaceConfig = replaceConfig;
     }
 
@@ -17,15 +17,23 @@ public class SqlReplace implements BaseReplace {
         List<String> replaceTablePrefix = replaceConfig.getReplaceTablePrefix();
         List<String> replaceTableSuffix = replaceConfig.getReplaceTableSuffix();
         String afterText = text;
-        String prefix = replaceTablePrefix.stream().filter(e -> text.startsWith(e)).findAny().get();
+        String prefix = replaceTablePrefix != null ? replaceTablePrefix.stream().filter(e -> text.startsWith(e)).findAny().orElse(null):null;
+        boolean state = false;
         if (prefix != null) {
             afterText = afterText.replaceFirst(prefix, replaceConfig.getReplaceStr());
+            state = true;
         }
 
-        String suffix = replaceTableSuffix.stream().filter(e -> text.endsWith(e)).findAny().get();
+        String suffix = replaceTableSuffix != null ? replaceTableSuffix.stream().filter(e -> text.endsWith(e)).findAny().orElse(null) : null;
         if (suffix != null) {
             afterText = afterText.replaceFirst(suffix, replaceConfig.getReplaceStr());
+            state = true;
         }
+
+        if (!state) {
+            afterText = replaceConfig.getReplaceStr() + afterText;
+        }
+
         return afterText;
     }
 

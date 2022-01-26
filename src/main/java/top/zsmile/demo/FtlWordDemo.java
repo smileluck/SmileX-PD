@@ -1,27 +1,29 @@
 package top.zsmile.demo;
 
+import com.alibaba.excel.EasyExcel;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import top.zsmile.core.config.FreemakerConfig;
 import top.zsmile.core.constant.DefaultConstants;
-import top.zsmile.core.execute.WordExecute;
+import top.zsmile.core.entity.vo.ReplaceTableVO;
 import top.zsmile.core.handler.filter.FilterConfig;
 import top.zsmile.core.handler.filter.ProcessFilter;
+import top.zsmile.core.handler.replace.ReplaceConfig;
+import top.zsmile.core.handler.replace.TableNameReplace;
 import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.DatabaseModel;
+import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
+import top.zsmile.core.process.WordProcess;
 import top.zsmile.core.query.MysqlQuery;
 import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ModelUtils;
 import top.zsmile.core.utils.ResultSetUtils;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,8 +129,8 @@ public class FtlWordDemo {
         dataMap.put("tables", mergeList);
         dataMap.put("db", databaseModel);
 
-        WordExecute wordExecute = new WordExecute();
-        wordExecute.executeWord(dataMap);
+        WordProcess wordExecute = new WordProcess();
+        wordExecute.process(dataMap);
     }
 
     public static void test22(List<String> databaseNameList) {
@@ -161,7 +163,7 @@ public class FtlWordDemo {
 
     public static void test3() {
         MysqlQuery mysqlQuery = new MysqlQuery();
-        String sql = mysqlQuery.queryCreateTableSql("geek_shop.tb_order_good");
+        String sql = mysqlQuery.queryCreateTableSql("geek_shop", "tb_order_good");
         System.out.println(sql);
     }
 
@@ -209,7 +211,7 @@ public class FtlWordDemo {
                 Statement statement = connection.createStatement();
 
                 for (TablesModel tablesModel : filter) {
-                    String sql = mysqlQuery.queryCreateTableSql(databaseName + "." + tablesModel.getTableName());
+                    String sql = mysqlQuery.queryCreateTableSql(databaseName, tablesModel.getTableName());
                     System.out.println(sql);
                     statement.execute(sql);
                 }
@@ -221,51 +223,83 @@ public class FtlWordDemo {
         }
     }
 
+    public static void test55(List<String> databaseNameList, FilterConfig filterConfig) {
+        for (String databaseName : databaseNameList) {
+            MysqlQuery mysqlQuery = new MysqlQuery();
+            List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+//            List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
+
+            List<TablesModel> filter = new ProcessFilter(filterConfig).filter(tablesModels);
+
+            try {
+                Connection connection = DataSourceUtils.getConnection();
+                connection.setAutoCommit(false);
+                Statement statement = connection.createStatement();
+
+                List<ReplaceTableVO> replaceTableVOS = new ArrayList<>();
+
+                List<String> replacePrefix = new ArrayList<>();
+                replacePrefix.add("tb_");
+                replacePrefix.add("t_");
+                replacePrefix.add("w_");
+
+                TableNameReplace tableNameReplace = new TableNameReplace(ReplaceConfig.builder(databaseName + "_").replaceTablePrefix(replacePrefix).build());
+
+                for (TablesModel tablesModel : filter) {
+                    ReplaceTableVO replaceTableVO = new ReplaceTableVO();
+                    replaceTableVO.setFromDatabaseName(databaseName);
+                    replaceTableVO.setToDatabaseName("ods_original");
+                    String sql = mysqlQuery.queryCreateTableSql(databaseName, tablesModel.getTableName());
+
+
+                    String toTableName = tableNameReplace.replace(tablesModel.getTableName());
+
+                    String afterSql = sql.replace(tablesModel.getTableName(), toTableName);
+//                    String afterSql = sqlReplace.replace(sql);
+
+                    replaceTableVO.setFromTableName(tablesModel.getTableName());
+                    replaceTableVO.setFromTableSql(sql);
+                    replaceTableVO.setToTableName(toTableName);
+                    replaceTableVO.setToTableSql(afterSql);
+
+                    replaceTableVOS.add(replaceTableVO);
+                    statement.execute(afterSql);
+                }
+                String fileName = databaseName + ".xlsx";
+                // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+                // 如果这里想使用03 则 传入excelType参数即可
+                EasyExcel.write(fileName, ReplaceTableVO.class)
+                        .sheet("模板")
+                        .doWrite(() -> {
+                            // 分页查询数据
+                            return replaceTableVOS;
+                        });
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void test6(List<String> databaseNameList, FilterConfig filterConfig) {
+//        for (String databaseName : databaseNameList) {
+        MysqlQuery mysqlQuery = new MysqlQuery();
+//            List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+        List<IndexModel> indexModels = mysqlQuery.queryIndex("heitan_db", "tb_certificate");
+        System.out.println(indexModels);
+//            List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
+
+//        }
+    }
+
     public static void main(String[] args) {
-
-        List<String> assignTableNames = new ArrayList<String>();
-        assignTableNames.add("common_constants");
-        assignTableNames.add("mt_play_log");
-        assignTableNames.add("mt_product_info");
-        assignTableNames.add("mt_product_sale_backup");
-        assignTableNames.add("mt_push_error");
-        assignTableNames.add("mt_shop");
-        assignTableNames.add("mt_shop_play");
-        assignTableNames.add("mt_shop_play_log");
-        assignTableNames.add("tb_article");
-        assignTableNames.add("tb_article_category");
-        assignTableNames.add("tb_comment");
-        assignTableNames.add("tb_comment_category");
-        assignTableNames.add("tb_vlog");
-        assignTableNames.add("w_access");
-        assignTableNames.add("w_admin");
-        assignTableNames.add("w_certificate");
-        assignTableNames.add("w_certificate_log");
-        assignTableNames.add("w_certificate_voucher");
-        assignTableNames.add("w_opera");
-        assignTableNames.add("w_opera_audit");
-        assignTableNames.add("w_play_htyp_sale");
-        assignTableNames.add("w_play_sale_log");
-        assignTableNames.add("w_play_sale_total_log");
-        assignTableNames.add("w_publisher");
-        assignTableNames.add("w_region_new");
-        assignTableNames.add("w_shop");
-        assignTableNames.add("w_tags");
-        assignTableNames.add("w_writer");
-
-        FilterConfig filterConfig = FilterConfig.builder().assignTableName(assignTableNames).build();
-        List<String> list = new ArrayList<>();
-//        list.add("localhost");
-//        list.add("black_probe_ms");
-//        list.add("content_db");
-//        list.add("heitan_db");
-//        list.add("heitan_open");
-//        list.add("heitan_pay");
-//        list.add("wolf_data_db");
-        list.add("heytalk");
-//        test22(list);
+        List list = new ArrayList<>();
+        list.add("ods_original");
+        test22(list);
 //
-        test5(list, filterConfig);
+//        test55(list, filterConfig);
+//        test6(null, null);
 //        System.out.println(list.contains("heitan_pay"));
 //        System.out.println(list.contains("heitan_Pay"));
 //        System.out.println(list.contains("heitan_ay"));

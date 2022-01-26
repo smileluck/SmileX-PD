@@ -26,6 +26,13 @@
 
     <dependencies>
 
+        <!-- easypoi -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
         <!-- Spring FrameWork -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -11,7 +11,7 @@ public class WordProcess extends AbstractProcess {
     public void process(Map<String, Object> dataMap) {
         try {
             Template template = FreemakerConfig.INSTANCE.getTemplate("document-word.ftl");
-            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("/test.docx")), "UTF-8"));
+            Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("test.docx")), "UTF-8"));
             //FreeMarker使用Word模板和数据生成Word文档
             template.process(dataMap, out);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package top.zsmile.core.query;
 
 import top.zsmile.core.model.ColumnsModel;
+import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
 
 import java.util.List;
@@ -26,7 +27,11 @@ public interface Query {
      *
      * @param tableName
      */
-    String queryCreateTableSql(String tableName);
+    String queryCreateTableSql(String databaseName, String tableName);
 
+    /**
+     * 查询索引
+     */
+    List<IndexModel> queryIndex(String databaseName, String tableName);
 
 }
