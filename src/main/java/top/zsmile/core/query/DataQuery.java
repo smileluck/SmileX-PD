@@ -6,7 +6,7 @@ import top.zsmile.core.model.TablesModel;
 
 import java.util.List;
 
-public interface Query {
+public interface DataQuery {
     /**
      * 查询表信息
      *
@@ -33,5 +33,10 @@ public interface Query {
      * 查询索引
      */
     List<IndexModel> queryIndex(String databaseName, String tableName);
+
+    /**
+     * 查询db所有索引
+     */
+    List<IndexModel> queryIndex(String databaseName);
 
 }

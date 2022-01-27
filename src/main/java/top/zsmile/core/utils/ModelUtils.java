@@ -2,6 +2,7 @@ package top.zsmile.core.utils;
 
 import com.mysql.cj.xdevapi.Column;
 import top.zsmile.core.model.ColumnsModel;
+import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
 
 import java.util.List;
@@ -22,4 +23,32 @@ public class ModelUtils {
         }
         return tableList;
     }
+
+
+    public static List mergeTableAndIndex(List<TablesModel> tableList, List<IndexModel> indexModelList) {
+        Map<String, List<IndexModel>> collect = indexModelList.stream().collect(Collectors.groupingBy(IndexModel::getTableName));
+        for (TablesModel tablesModel : tableList) {
+            String tableName = tablesModel.getTableName();
+            List<IndexModel> indexModels = collect.get(tableName);
+            if (indexModels != null) {
+                tablesModel.setIndexModelList(indexModels);
+                continue;
+            }
+        }
+        return tableList;
+    }
+
+    /**
+     * same key-name merge more field to one
+     *
+     * @return
+     */
+    public static List mergeTableIndex(List<IndexModel> indexModels) {
+        List<IndexModel> mergeResult = indexModels.parallelStream().collect(Collectors.toMap(IndexModel::getKeyName, a -> a, (o1, o2) -> {
+            o1.setShowColumnName(o1.getShowColumnName() + "," + o2.getShowColumnName());
+            return o1;
+        })).values().stream().collect(Collectors.toList());
+        return mergeResult;
+    }
+
 }

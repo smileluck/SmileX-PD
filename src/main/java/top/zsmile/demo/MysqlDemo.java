@@ -1,16 +1,19 @@
 package top.zsmile.demo;
 
 import com.alibaba.excel.EasyExcel;
+import top.zsmile.core.entity.dto.ColumnAddDTO;
 import top.zsmile.core.entity.vo.ReplaceTableVO;
-import top.zsmile.core.handler.filter.FilterConfig;
-import top.zsmile.core.handler.filter.ProcessFilter;
+import top.zsmile.core.handler.filter.TableFilter;
+import top.zsmile.core.handler.filter.TableFilterConfig;
 import top.zsmile.core.handler.replace.ReplaceConfig;
 import top.zsmile.core.handler.replace.SqlForeignKeyReplace;
 import top.zsmile.core.handler.replace.TableNameReplace;
+import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
-import top.zsmile.core.query.MysqlDrop;
-import top.zsmile.core.query.MysqlQuery;
+import top.zsmile.core.query.MysqlDataManipulation;
+import top.zsmile.core.query.MysqlDataQuery;
 import top.zsmile.core.utils.DataSourceUtils;
+import top.zsmile.core.utils.ModelUtils;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -20,25 +23,38 @@ import java.util.List;
 import java.util.Map;
 
 public class MysqlDemo {
-    public static void test1() {
-        String databaseName = "ods_original";
-        MysqlDrop mysqlDrop = new MysqlDrop();
+    public static void searchAndMergeIndex() {
+        String databaseName = "smilex-pd";
+        MysqlDataManipulation mysqlDrop = new MysqlDataManipulation();
 
-        MysqlQuery mysqlQuery = new MysqlQuery();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
 
-        List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
-        for (TablesModel tablesModel : tablesModels) {
-            mysqlDrop.dropIndex(databaseName, tablesModel.getTableName());
-        }
+        List<IndexModel> indexModels = mysqlQuery.queryIndex(databaseName, "demo");
+
+        List list = ModelUtils.mergeTableIndex(indexModels);
+        System.out.println(list);
     }
 
-    public static void test2(List<String> databaseNameList, FilterConfig filterConfig) {
+    public static void dropIndex() {
+        String databaseName = "heitan_db";
+        MysqlDataManipulation mysqlDrop = new MysqlDataManipulation();
+        mysqlDrop.dropIndex(databaseName, "tb_certificate");
+
+
+//        MysqlQuery mysqlQuery = new MysqlQuery();
+//        List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+//        for (TablesModel tablesModel : tablesModels) {
+//            mysqlDrop.dropIndex(databaseName, tablesModel.getTableName());
+//        }
+    }
+
+    public static void mergeDb(List<String> databaseNameList, TableFilterConfig tableFilterConfig) {
         for (String databaseName : databaseNameList) {
-            MysqlQuery mysqlQuery = new MysqlQuery();
+            MysqlDataQuery mysqlQuery = new MysqlDataQuery();
             List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
 //            List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
 
-            List<TablesModel> filter = new ProcessFilter(filterConfig).filter(tablesModels);
+            List<TablesModel> filter = new TableFilter(tableFilterConfig).filter(tablesModels);
 
             Map<String, Integer> repeatMap = new HashMap<>();
 
@@ -106,23 +122,31 @@ public class MysqlDemo {
         }
     }
 
+    public static void addColumn() {
+        ColumnAddDTO build = ColumnAddDTO.builder().columnName("test").comment("测试").dataType("varchar").dataLen(255).defaultStr("ttttt").build();
+        MysqlDataManipulation mysqlDataManipulation = new MysqlDataManipulation();
+        mysqlDataManipulation.addColumn("smilex-pd", "demo", build);
+    }
+
     public static void main(String[] args) {
+//        searchAndMergeIndex();
+        addColumn();
 
-        List<String> assignTableNames = new ArrayList<String>();
-
-        assignTableNames.add("common_constants");
-
-
-        FilterConfig filterConfig = FilterConfig.builder().assignTableName(assignTableNames).build();
-        List<String> list = new ArrayList<>();
-//        list.add("localhost");
-//        list.add("black_probe_ms");
-//        list.add("content_db");
-//        list.add("heitan_db");
-//        list.add("heitan_open");
-//        list.add("heitan_pay");
-//        list.add("heytalk");
-        list.add("wolf_data_db");
-        test2(list, filterConfig);
+//        List<String> assignTableNames = new ArrayList<String>();
+//
+//        assignTableNames.add("common_constants");
+//
+//
+//        FilterConfig filterConfig = FilterConfig.builder().assignTableName(assignTableNames).build();
+//        List<String> list = new ArrayList<>();
+////        list.add("localhost");
+////        list.add("black_probe_ms");
+////        list.add("content_db");
+////        list.add("heitan_db");
+////        list.add("heitan_open");
+////        list.add("heitan_pay");
+////        list.add("heytalk");
+//        list.add("wolf_data_db");
+//        mergeDb(list, filterConfig);
     }
 }

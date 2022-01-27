@@ -9,7 +9,8 @@ import top.zsmile.core.config.FreemakerConfig;
 import top.zsmile.core.constant.DefaultConstants;
 import top.zsmile.core.entity.vo.ReplaceTableVO;
 import top.zsmile.core.handler.filter.FilterConfig;
-import top.zsmile.core.handler.filter.ProcessFilter;
+import top.zsmile.core.handler.filter.TableFilter;
+import top.zsmile.core.handler.filter.TableFilterConfig;
 import top.zsmile.core.handler.replace.ReplaceConfig;
 import top.zsmile.core.handler.replace.TableNameReplace;
 import top.zsmile.core.model.ColumnsModel;
@@ -17,7 +18,7 @@ import top.zsmile.core.model.DatabaseModel;
 import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
 import top.zsmile.core.process.WordProcess;
-import top.zsmile.core.query.MysqlQuery;
+import top.zsmile.core.query.MysqlDataQuery;
 import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ModelUtils;
 import top.zsmile.core.utils.ResultSetUtils;
@@ -118,7 +119,7 @@ public class FtlWordDemo {
     }
 
     public static void test2(String databaseName) {
-        MysqlQuery mysqlQuery = new MysqlQuery();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
         List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
         List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
 
@@ -133,13 +134,15 @@ public class FtlWordDemo {
         wordExecute.process(dataMap);
     }
 
-    public static void test22(List<String> databaseNameList) {
+    public static void export(List<String> databaseNameList) {
         for (String databaseName : databaseNameList) {
-            MysqlQuery mysqlQuery = new MysqlQuery();
+            MysqlDataQuery mysqlQuery = new MysqlDataQuery();
             List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
             List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
+            List<IndexModel> indexModels = mysqlQuery.queryIndex(databaseName);
 
             List mergeList = ModelUtils.mergeTableAndColumn(tablesModels, columnsModels);
+            mergeList = ModelUtils.mergeTableAndIndex(mergeList, indexModels);
 
             DatabaseModel databaseModel = new DatabaseModel();
             databaseModel.setName(databaseName);
@@ -162,17 +165,17 @@ public class FtlWordDemo {
     }
 
     public static void test3() {
-        MysqlQuery mysqlQuery = new MysqlQuery();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
         String sql = mysqlQuery.queryCreateTableSql("geek_shop", "tb_order_good");
         System.out.println(sql);
     }
 
-    public static void test4(List<String> databaseNameList, FilterConfig filterConfig) {
+    public static void test4(List<String> databaseNameList, TableFilterConfig tableFilterConfig) {
         for (String databaseName : databaseNameList) {
-            MysqlQuery mysqlQuery = new MysqlQuery();
+            MysqlDataQuery mysqlQuery = new MysqlDataQuery();
             List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
             List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
-            List filter = new ProcessFilter(filterConfig).filter(tablesModels);
+            List filter = new TableFilter(tableFilterConfig).filter(tablesModels);
 
             List mergeList = ModelUtils.mergeTableAndColumn(filter, columnsModels);
 
@@ -198,13 +201,13 @@ public class FtlWordDemo {
         }
     }
 
-    public static void test5(List<String> databaseNameList, FilterConfig filterConfig) {
+    public static void test5(List<String> databaseNameList, TableFilterConfig tableFilterConfig) {
         for (String databaseName : databaseNameList) {
-            MysqlQuery mysqlQuery = new MysqlQuery();
+            MysqlDataQuery mysqlQuery = new MysqlDataQuery();
             List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
 //            List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
 
-            List<TablesModel> filter = new ProcessFilter(filterConfig).filter(tablesModels);
+            List<TablesModel> filter = new TableFilter(tableFilterConfig).filter(tablesModels);
 
             try {
                 Connection connection = DataSourceUtils.getConnection();
@@ -223,13 +226,13 @@ public class FtlWordDemo {
         }
     }
 
-    public static void test55(List<String> databaseNameList, FilterConfig filterConfig) {
+    public static void test55(List<String> databaseNameList, TableFilterConfig tableFilterConfig) {
         for (String databaseName : databaseNameList) {
-            MysqlQuery mysqlQuery = new MysqlQuery();
+            MysqlDataQuery mysqlQuery = new MysqlDataQuery();
             List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
 //            List<ColumnsModel> columnsModels = mysqlQuery.queryColumns(databaseName);
 
-            List<TablesModel> filter = new ProcessFilter(filterConfig).filter(tablesModels);
+            List<TablesModel> filter = new TableFilter(tableFilterConfig).filter(tablesModels);
 
             try {
                 Connection connection = DataSourceUtils.getConnection();
@@ -282,9 +285,9 @@ public class FtlWordDemo {
         }
     }
 
-    public static void test6(List<String> databaseNameList, FilterConfig filterConfig) {
+    public static void test6(List<String> databaseNameList, FilterConfig tableFilterConfig) {
 //        for (String databaseName : databaseNameList) {
-        MysqlQuery mysqlQuery = new MysqlQuery();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
 //            List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
         List<IndexModel> indexModels = mysqlQuery.queryIndex("heitan_db", "tb_certificate");
         System.out.println(indexModels);
@@ -295,8 +298,8 @@ public class FtlWordDemo {
 
     public static void main(String[] args) {
         List list = new ArrayList<>();
-        list.add("ods_original");
-        test22(list);
+        list.add("smilex-pd");
+        export(list);
 //
 //        test55(list, filterConfig);
 //        test6(null, null);

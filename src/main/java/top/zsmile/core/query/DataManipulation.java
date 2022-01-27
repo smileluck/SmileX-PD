@@ -1,10 +1,11 @@
 package top.zsmile.core.query;
 
+import top.zsmile.core.entity.dto.ColumnAddDTO;
 import top.zsmile.core.model.IndexModel;
 
 import java.util.List;
 
-public interface Drop {
+public interface DataManipulation {
 
 
     /**
@@ -22,4 +23,13 @@ public interface Drop {
      */
     boolean dropIndex(String databaseName, String tableName, String indexName);
 
+    /**
+     * 删除字段
+     */
+    boolean dropColumn(String databaseName, String tableName, String columnName);
+
+    /**
+     * 添加字段
+     */
+    boolean addColumn(String databaseName, String tableName, ColumnAddDTO columnAddDTO);
 }

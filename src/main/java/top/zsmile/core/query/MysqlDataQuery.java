@@ -1,11 +1,8 @@
 package top.zsmile.core.query;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import top.zsmile.core.model.ColumnsModel;
 import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.model.TablesModel;
-import top.zsmile.core.model.convert.IndexModelConvert;
 import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ResultSetUtils;
 
@@ -15,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public class MysqlQuery implements Query {
+public class MysqlDataQuery implements DataQuery {
     @Override
     public List<TablesModel> queryTables(String databaseName) {
         Connection connection = null;
@@ -121,11 +118,28 @@ public class MysqlQuery implements Query {
         try {
             connection = DataSourceUtils.getConnection();
             Statement statement = connection.createStatement();
-
-            String sql = "SHOW INDEX FROM " + databaseName + "." + tableName + ";";
-
+            String sql = "SELECT\n" +
+                    "\tTABLE_NAME AS tableName,\n" +
+                    "\tNON_UNIQUE AS nonUnique,\n" +
+                    "\tINDEX_NAME AS keyName,\n" +
+                    "\tSEQ_IN_INDEX AS seqInIndex,\n" +
+                    "\tCOLUMN_NAME AS columnName,\n" +
+                    "\tNULLABLE AS izNull,\n" +
+                    "\tINDEX_TYPE AS indexType,\n" +
+                    "\t`COMMENT` AS `comment`,\n" +
+                    "\tINDEX_COMMENT AS indexComment,\n" +
+                    "\tSUB_PART AS subPart,\n" +
+                    "\tCONCAT_WS(\"#\",COLUMN_NAME,SUB_PART) AS showColumnName,\n" +
+                    "\tif(NON_UNIQUE=1,\"Normal\",\"Unique\") as indexUnique\n" +
+                    "FROM\n" +
+                    "\tinformation_schema.`STATISTICS`\n" +
+                    "\twhere TABLE_SCHEMA = '" + databaseName + "'";
+            if (tableName != null && tableName != "") {
+                sql += " and TABLE_NAME = '" + tableName + "'";
+            }
+            sql += ";";
             ResultSet resultSet = statement.executeQuery(sql);
-            List<IndexModel> indexList = ResultSetUtils.convertClassList(resultSet, IndexModel.class, IndexModelConvert.INSTANCE);
+            List<IndexModel> indexList = ResultSetUtils.convertClassList(resultSet, IndexModel.class);
             return indexList;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,5 +147,10 @@ public class MysqlQuery implements Query {
         } finally {
             DataSourceUtils.closeConnection(connection);
         }
+    }
+
+    @Override
+    public List<IndexModel> queryIndex(String databaseName) {
+        return queryIndex(databaseName, null);
     }
 }

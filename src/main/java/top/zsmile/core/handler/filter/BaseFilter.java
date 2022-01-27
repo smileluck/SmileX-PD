@@ -5,6 +5,6 @@ import top.zsmile.core.model.TablesModel;
 
 import java.util.List;
 
-public interface BaseFilter {
-    public List<TablesModel> filter(List<TablesModel> list);
+public interface BaseFilter<T> {
+    public List<T> filter(List<T> list);
 }

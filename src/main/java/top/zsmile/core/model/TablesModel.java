@@ -15,6 +15,8 @@ public class TablesModel {
 
     private List<ColumnsModel> columnsModelList;
 
+    private List<IndexModel> indexModelList;
+
     /**
      * 缺少字段
      */

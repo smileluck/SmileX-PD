@@ -1574,7 +1574,7 @@
                                             <w:sz w:val="18"/>
                                             <w:sz-cs w:val="18"/>
                                         </w:rPr>
-                                        <w:t>缺少字段：</w:t>
+                                        <w:t>字段筛查：</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -2098,6 +2098,455 @@
                             </#list>
                         </#if>
                     </w:tbl>
+                    <w:p/>
+                    <#if table.indexModelList ??>
+                        <w:tbl>
+                            <w:tblPr>
+                                <w:tblW w:w="8367" w:type="dxa"/>
+                                <w:jc w:val="center"/>
+                                <w:tblInd w:w="-395" w:type="dxa"/>
+                                <w:tblBorders>
+                                    <w:top w:val="nil"/>
+                                    <w:left w:val="nil"/>
+                                    <w:bottom w:val="nil"/>
+                                    <w:right w:val="nil"/>
+                                    <w:insideH w:val="nil"/>
+                                    <w:insideV w:val="nil"/>
+                                </w:tblBorders>
+                                <w:tblLayout w:type="Fixed"/>
+                                <w:tblCellMar>
+                                    <w:top w:w="0" w:type="dxa"/>
+                                    <w:left w:w="108" w:type="dxa"/>
+                                    <w:bottom w:w="0" w:type="dxa"/>
+                                    <w:right w:w="108" w:type="dxa"/>
+                                </w:tblCellMar>
+                            </w:tblPr>
+                            <w:tblGrid>
+                                <w:gridCol w:w="1437"/>
+                                <w:gridCol w:w="403"/>
+                                <w:gridCol w:w="2398"/>
+                                <w:gridCol w:w="1082"/>
+                                <w:gridCol w:w="1104"/>
+                                <w:gridCol w:w="1216"/>
+                                <w:gridCol w:w="727"/>
+                            </w:tblGrid>
+                            <w:tr>
+                                <w:tblPrEx>
+                                    <w:tblBorders>
+                                        <w:top w:val="nil"/>
+                                        <w:left w:val="nil"/>
+                                        <w:bottom w:val="nil"/>
+                                        <w:right w:val="nil"/>
+                                        <w:insideH w:val="nil"/>
+                                        <w:insideV w:val="nil"/>
+                                    </w:tblBorders>
+                                    <w:tblCellMar>
+                                        <w:top w:w="0" w:type="dxa"/>
+                                        <w:left w:w="108" w:type="dxa"/>
+                                        <w:bottom w:w="0" w:type="dxa"/>
+                                        <w:right w:w="108" w:type="dxa"/>
+                                    </w:tblCellMar>
+                                </w:tblPrEx>
+                                <w:trPr>
+                                    <w:jc w:val="center"/>
+                                </w:trPr>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="1840" w:type="dxa"/>
+                                        <w:gridSpan w:val="2"/>
+                                        <w:tcBorders>
+                                            <w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                      w:color="auto"/>
+                                            <w:right w:val="nil"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="right"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="宋体" w:h-ansi="宋体" w:cs="宋体" w:hint="default"/>
+                                                <w:sz w:val="18"/>
+                                                <w:sz-cs w:val="18"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="宋体" w:h-ansi="宋体" w:cs="宋体" w:hint="fareast"/>
+                                                <w:sz w:val="18"/>
+                                                <w:sz-cs w:val="18"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                            <w:t>索引</w:t>
+                                        </w:r>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="宋体" w:h-ansi="宋体" w:cs="宋体" w:hint="fareast"/>
+                                                <w:sz w:val="18"/>
+                                                <w:sz-cs w:val="18"/>
+                                            </w:rPr>
+                                            <w:t>列：</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="5800" w:type="dxa"/>
+                                        <w:gridSpan w:val="4"/>
+                                        <w:tcBorders>
+                                            <w:left w:val="nil"/>
+                                            <w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                      w:color="auto"/>
+                                            <w:right w:val="nil"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="宋体" w:h-ansi="宋体" w:cs="宋体" w:hint="default"/>
+                                                <w:sz w:val="18"/>
+                                                <w:sz-cs w:val="18"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="727" w:type="dxa"/>
+                                        <w:vmerge w:val="restart"/>
+                                        <w:tcBorders>
+                                            <w:left w:val="nil"/>
+                                            <w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                      w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                    </w:tcPr>
+                                    <w:p/>
+                                </w:tc>
+                            </w:tr>
+                            <w:tr>
+                                <w:tblPrEx>
+                                    <w:tblBorders>
+                                        <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        <w:left w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        <w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        <w:right w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        <w:insideH w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        <w:insideV w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                    </w:tblBorders>
+                                    <w:tblCellMar>
+                                        <w:top w:w="0" w:type="dxa"/>
+                                        <w:left w:w="108" w:type="dxa"/>
+                                        <w:bottom w:w="0" w:type="dxa"/>
+                                        <w:right w:w="108" w:type="dxa"/>
+                                    </w:tblCellMar>
+                                </w:tblPrEx>
+                                <w:trPr>
+                                    <w:jc w:val="center"/>
+                                </w:trPr>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="1437" w:type="dxa"/>
+                                        <w:tcBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="D7D7D7"/>
+                                        <w:vAlign w:val="center"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="center"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                            <w:t>索引名</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="2801" w:type="dxa"/>
+                                        <w:gridSpan w:val="2"/>
+                                        <w:tcBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="D7D7D7"/>
+                                        <w:vAlign w:val="center"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="center"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                            <w:t>字段</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="1082" w:type="dxa"/>
+                                        <w:tcBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="D7D7D7"/>
+                                        <w:vAlign w:val="center"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="center"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="default"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                            <w:t>索引类型</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="1104" w:type="dxa"/>
+                                        <w:tcBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="D7D7D7"/>
+                                        <w:vAlign w:val="center"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="center"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="default"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                                <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                            </w:rPr>
+                                            <w:t>索引方法</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                                <w:tc>
+                                    <w:tcPr>
+                                        <w:tcW w:w="1943" w:type="dxa"/>
+                                        <w:gridSpan w:val="2"/>
+                                        <w:tcBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                        </w:tcBorders>
+                                        <w:shd w:val="clear" w:color="auto" w:fill="D7D7D7"/>
+                                        <w:vAlign w:val="center"/>
+                                    </w:tcPr>
+                                    <w:p>
+                                        <w:pPr>
+                                            <w:jc w:val="center"/>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="default"/>
+                                                <w:sz-cs w:val="21"/>
+                                            </w:rPr>
+                                        </w:pPr>
+                                        <w:r>
+                                            <w:rPr>
+                                                <w:rFonts w:ascii="黑体" w:h-ansi="黑体" w:fareast="黑体" w:cs="黑体"
+                                                          w:hint="fareast"/>
+                                                <w:sz-cs w:val="21"/>
+                                            </w:rPr>
+                                            <w:t>说明</w:t>
+                                        </w:r>
+                                    </w:p>
+                                </w:tc>
+                            </w:tr>
+
+                            <#list table.indexModelList as indexModel >
+                                <w:tr>
+                                    <w:tblPrEx>
+                                        <w:tblBorders>
+                                            <w:top w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0" w:color="auto"/>
+                                            <w:left w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                    w:color="auto"/>
+                                            <w:bottom w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                      w:color="auto"/>
+                                            <w:right w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                     w:color="auto"/>
+                                            <w:insideH w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                       w:color="auto"/>
+                                            <w:insideV w:val="single" w:sz="4" wx:bdrwidth="10" w:space="0"
+                                                       w:color="auto"/>
+                                        </w:tblBorders>
+                                        <w:tblCellMar>
+                                            <w:top w:w="0" w:type="dxa"/>
+                                            <w:left w:w="108" w:type="dxa"/>
+                                            <w:bottom w:w="0" w:type="dxa"/>
+                                            <w:right w:w="108" w:type="dxa"/>
+                                        </w:tblCellMar>
+                                    </w:tblPrEx>
+                                    <w:trPr>
+                                        <w:jc w:val="center"/>
+                                    </w:trPr>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="1437" w:type="dxa"/>
+                                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p>
+                                            <w:pPr>
+                                                <w:jc w:val="center"/>
+                                                <w:rPr>
+                                                    <w:rFonts w:fareast="宋体" w:hint="default"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="fareast"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                                <w:t>${indexModel.keyName}</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="2801" w:type="dxa"/>
+                                            <w:gridSpan w:val="2"/>
+                                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p>
+                                            <w:pPr>
+                                                <w:jc w:val="center"/>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="default"/>
+                                                    <w:lang w:val="EN-US"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="fareast"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                                <w:t>${indexModel.showColumnName}</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="1082" w:type="dxa"/>
+                                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p>
+                                            <w:pPr>
+                                                <w:jc w:val="center"/>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="default"/>
+                                                    <w:lang w:val="EN-US"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="fareast"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                                <w:t>${indexModel.indexUnique}</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="1104" w:type="dxa"/>
+                                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p>
+                                            <w:pPr>
+                                                <w:jc w:val="center"/>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="default"/>
+                                                    <w:lang w:val="EN-US"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="fareast"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                                <w:t>${indexModel.indexType}</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="1943" w:type="dxa"/>
+                                            <w:gridSpan w:val="2"/>
+                                            <w:shd w:val="clear" w:color="auto" w:fill="auto"/>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p>
+                                            <w:pPr>
+                                                <w:jc w:val="center"/>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="default"/>
+                                                    <w:lang w:val="EN-US"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                            <w:r>
+                                                <w:rPr>
+                                                    <w:rFonts w:hint="fareast"/>
+                                                    <w:lang w:val="EN-US" w:fareast="ZH-CN"/>
+                                                </w:rPr>
+                                                <w:t>${indexModel.indexComment!""}</w:t>
+                                            </w:r>
+                                        </w:p>
+                                    </w:tc>
+                                </w:tr>
+
+                            </#list>
+                        </w:tbl>
+                    </#if>
+                    <w:p/>
+                    <w:p/>
                     <w:p/>
                 </#list>
 
