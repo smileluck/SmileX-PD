@@ -21,4 +21,9 @@ public class TablesModel {
      * 缺少字段
      */
     private String missField;
+    private List<String> missFieldList;
+    /**
+     * 是否有主键或唯一索引
+     */
+    private Boolean haveUnique;
 }
