@@ -128,9 +128,29 @@ public class MysqlDemo {
         mysqlDataManipulation.addColumn("smilex-pd", "demo", build);
     }
 
+    public static void addColumn2() {
+
+        String databaseName = "heytime_ods";
+        MysqlDataManipulation mysqlDataManipulation = new MysqlDataManipulation();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
+
+//        ColumnAddDTO etlCreateTime = ColumnAddDTO.builder().columnName("elt_create_time").comment("etl创建时间").dataType("datetime").build();
+//        ColumnAddDTO etlUpdateTime = ColumnAddDTO.builder().columnName("elt_update_time").comment("etl更新时间").dataType("datetime").build();
+        ColumnAddDTO eltDelFlag = ColumnAddDTO.builder().columnName("elt_del_flag").comment("etl逻辑删除").defaultStr("0").dataType("smallint").build();
+
+
+        List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+        for (TablesModel tablesModel : tablesModels) {
+            if (tablesModel.getTableName().equalsIgnoreCase("heitan_db_test_ods")) continue;
+//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlCreateTime);
+//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlUpdateTime);
+            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), eltDelFlag);
+        }
+    }
+
     public static void main(String[] args) {
 //        searchAndMergeIndex();
-        addColumn();
+//        addColumn2();
 
 //        List<String> assignTableNames = new ArrayList<String>();
 //

@@ -19,8 +19,11 @@ public class ColumnAddDTO {
     public String toSql() {
         StringBuffer sb = new StringBuffer();
         sb.append(" ADD COLUMN `" + columnName + "` ");
-        sb.append(dataType + "(" + dataLen + (dataPoint != null ? "," + dataPoint : "") + ") ");
-        sb.append(nullable != null && nullable != 0 ? "NOT NULL " : "NULL ");
+        sb.append(dataType);
+        if (dataLen != null) {
+            sb.append("(" + dataLen + (dataPoint != null ? "," + dataPoint : "") + ") ");
+        }
+        sb.append(nullable != null && nullable != 0 ? " NOT NULL " : " NULL ");
         if (Strings.isNotBlank(defaultStr)) {
             sb.append(" DEFAULT \"" + defaultStr + "\" ");
         }
