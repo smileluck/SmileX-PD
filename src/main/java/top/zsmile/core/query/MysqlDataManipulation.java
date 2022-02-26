@@ -1,6 +1,7 @@
 package top.zsmile.core.query;
 
 import top.zsmile.core.entity.dto.ColumnAddDTO;
+import top.zsmile.core.entity.dto.ColumnChangeDTO;
 import top.zsmile.core.model.IndexModel;
 import top.zsmile.core.utils.DataSourceUtils;
 import top.zsmile.core.utils.ModelUtils;
@@ -103,6 +104,26 @@ public class MysqlDataManipulation implements DataManipulation {
             Statement statement = connection.createStatement();
             String sql = "ALTER TABLE `" + databaseName + "`.`" + tableName
                     + "` " + columnAddDTO.toSql();
+            boolean execute = statement.execute(sql);
+            return execute;
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            DataSourceUtils.closeConnection(connection);
+        }
+    }
+
+
+    @Override
+    public boolean changeColumn(String databaseName, String tableName, ColumnChangeDTO columnChangeDTO) {
+        Connection connection = null;
+        try {
+            connection = DataSourceUtils.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = "ALTER TABLE `" + databaseName + "`.`" + tableName
+                    + "` " + columnChangeDTO.toSql();
             boolean execute = statement.execute(sql);
             return execute;
         } catch (

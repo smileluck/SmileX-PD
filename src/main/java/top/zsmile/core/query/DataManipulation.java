@@ -1,6 +1,7 @@
 package top.zsmile.core.query;
 
 import top.zsmile.core.entity.dto.ColumnAddDTO;
+import top.zsmile.core.entity.dto.ColumnChangeDTO;
 import top.zsmile.core.model.IndexModel;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public interface DataManipulation {
      * 添加字段
      */
     boolean addColumn(String databaseName, String tableName, ColumnAddDTO columnAddDTO);
+    /**
+     * 修改字段
+     */
+    boolean changeColumn(String databaseName, String tableName, ColumnChangeDTO columnChangeDTO);
 }

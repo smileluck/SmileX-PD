@@ -1,13 +1,13 @@
 package top.zsmile.core.entity.dto;
 
+import com.alibaba.excel.util.StringUtils;
 import lombok.Builder;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 
 @Data
 @Builder
-public class ColumnAddDTO {
+public class ColumnChangeDTO {
     private String columnName;
     private String dataType;
     private Integer dataLen;
@@ -19,28 +19,23 @@ public class ColumnAddDTO {
 
     public String toSql() {
         StringBuffer sb = new StringBuffer();
-        sb.append(" ADD COLUMN `" + columnName + "` ");
+        sb.append(" CHANGE COLUMN `" + columnName + "` ");
         sb.append(dataType);
         if (dataLen != null) {
             sb.append("(" + dataLen + (dataPoint != null ? "," + dataPoint : "") + ") ");
         }
-        sb.append(nullable != null && nullable != 0 ? " NOT NULL " : " NULL ");
+//        sb.append(nullable != null && nullable != 0 ? " NOT NULL " : " NULL ");
         if (StringUtils.isNotBlank(defaultStr)) {
-            if(defaultStr.equalsIgnoreCase("CURRENT_TIMESTAMP")){
-                sb.append(" DEFAULT " + defaultStr + " ");
-            }else {
-                sb.append(" DEFAULT \"" + defaultStr + "\" ");
-            }
+            sb.append(" DEFAULT \"" + defaultStr + "\" ");
         }
         if (StringUtils.isNotBlank(comment)) {
             sb.append(" COMMENT \"" + comment + "\" ");
         }
-        if (StringUtils.isNotBlank(orderBy)) {
-            sb.append(orderBy);
-        }
+//        if (Strings.isNotBlank(orderBy)) {
+//            sb.append(orderBy);
+//        }
         //ALTER TABLE `smilex-boot`.`demo` ADD COLUMN `testadd` varchar(255) NOT NULL DEFAULT 666 COMMENT '123123' AFTER `name`
 
         return sb.toString();
     }
-    
 }

@@ -2,6 +2,7 @@ package top.zsmile.demo;
 
 import com.alibaba.excel.EasyExcel;
 import top.zsmile.core.entity.dto.ColumnAddDTO;
+import top.zsmile.core.entity.dto.ColumnChangeDTO;
 import top.zsmile.core.entity.vo.ReplaceTableVO;
 import top.zsmile.core.handler.filter.TableFilter;
 import top.zsmile.core.handler.filter.TableFilterConfig;
@@ -130,21 +131,75 @@ public class MysqlDemo {
 
     public static void addColumn2() {
 
+        String databaseName = "heytime_dw";
+        MysqlDataManipulation mysqlDataManipulation = new MysqlDataManipulation();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
+
+        ColumnAddDTO etlCreateTime = ColumnAddDTO.builder().columnName("elt_create_time").comment("etl创建时间").dataType("timestamp").build();
+        ColumnAddDTO etlUpdateTime = ColumnAddDTO.builder().columnName("elt_update_time").comment("etl更新时间").dataType("timestamp").build();
+//        ColumnAddDTO eltDelFlag = ColumnAddDTO.builder().columnName("elt_del_flag").comment("etl逻辑删除,0未删除，1删除").defaultStr("0").dataType("smallint").build();
+
+
+        List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+        int i = 1;
+        for (TablesModel tablesModel : tablesModels) {
+            System.out.println((i++) + "->" + tablesModel.getTableName());
+            if (tablesModel.getTableName().equalsIgnoreCase("data_insert_time_record")) continue;
+            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlCreateTime);
+            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlUpdateTime);
+//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), eltDelFlag);
+        }
+    }
+
+    public static void delColumn() {
+        String databaseName = "heytime_dw";
+        MysqlDataManipulation mysqlDataManipulation = new MysqlDataManipulation();
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
+
+        List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
+        int i = 1;
+        for (TablesModel tablesModel : tablesModels) {
+            System.out.println(i++ + "->" + tablesModel.getTableName());
+            if (tablesModel.getTableName().equalsIgnoreCase("heitan_db_test_ods")) continue;
+            mysqlDataManipulation.dropColumn(databaseName, tablesModel.getTableName(), "elt_create_time");
+            mysqlDataManipulation.dropColumn(databaseName, tablesModel.getTableName(), "elt_update_time");
+        }
+    }
+
+    public static void changeColumnDefault() {
+
         String databaseName = "heytime_ods";
         MysqlDataManipulation mysqlDataManipulation = new MysqlDataManipulation();
         MysqlDataQuery mysqlQuery = new MysqlDataQuery();
 
-//        ColumnAddDTO etlCreateTime = ColumnAddDTO.builder().columnName("elt_create_time").comment("etl创建时间").dataType("datetime").build();
-//        ColumnAddDTO etlUpdateTime = ColumnAddDTO.builder().columnName("elt_update_time").comment("etl更新时间").dataType("datetime").build();
-        ColumnAddDTO eltDelFlag = ColumnAddDTO.builder().columnName("elt_del_flag").comment("etl逻辑删除").defaultStr("0").dataType("smallint").build();
+        ColumnChangeDTO etlCreateTime = ColumnChangeDTO.builder().columnName("elt_create_time").comment("etl创建时间").dataType("timestamp").defaultStr("CURRENT_TIMESTAMP").build();
+        ColumnChangeDTO etlUpdateTime = ColumnChangeDTO.builder().columnName("elt_update_time").comment("etl更新时间").dataType("timestamp").defaultStr("CURRENT_TIMESTAMP").build();
+//        ColumnAddDTO eltDelFlag = ColumnAddDTO.builder().columnName("elt_del_flag").comment("etl逻辑删除").defaultStr("0").dataType("smallint").build();
 
 
         List<TablesModel> tablesModels = mysqlQuery.queryTables(databaseName);
         for (TablesModel tablesModel : tablesModels) {
             if (tablesModel.getTableName().equalsIgnoreCase("heitan_db_test_ods")) continue;
-//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlCreateTime);
-//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), etlUpdateTime);
-            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), eltDelFlag);
+            mysqlDataManipulation.changeColumn(databaseName, tablesModel.getTableName(), etlCreateTime);
+            mysqlDataManipulation.changeColumn(databaseName, tablesModel.getTableName(), etlUpdateTime);
+//            mysqlDataManipulation.addColumn(databaseName, tablesModel.getTableName(), eltDelFlag);
+        }
+    }
+
+    public static void copyTable() {
+        String targetDbName = "heytime_dw";
+
+        MysqlDataQuery mysqlQuery = new MysqlDataQuery();
+        List<TablesModel> tablesModels = mysqlQuery.queryTables(targetDbName);
+
+        for (TablesModel tablesModel : tablesModels) {
+            String createTableSql = mysqlQuery.queryCreateTableSql(targetDbName, tablesModel.getTableName());
+            createTableSql = createTableSql.replaceFirst(tablesModel.getTableName(), tablesModel.getTableName() + "_his");
+            String[] sqlArray = createTableSql.split("\n");
+            String subSql = sqlArray[sqlArray.length - 1];
+            sqlArray[sqlArray.length - 1] = subSql.substring(0, subSql.lastIndexOf("'")) + "_历史记录'";
+            String join = String.join("\n", sqlArray);
+            mysqlQuery.querySql(join);
         }
     }
 
@@ -168,5 +223,6 @@ public class MysqlDemo {
 ////        list.add("heytalk");
 //        list.add("wolf_data_db");
 //        mergeDb(list, filterConfig);
+        addColumn2();
     }
 }

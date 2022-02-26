@@ -153,4 +153,18 @@ public class MysqlDataQuery implements DataQuery {
     public List<IndexModel> queryIndex(String databaseName) {
         return queryIndex(databaseName, null);
     }
+
+    @Override
+    public void querySql(String sql) {
+        Connection connection = null;
+        try {
+            connection = DataSourceUtils.getConnection();
+            Statement statement = connection.createStatement();
+            int i = statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DataSourceUtils.closeConnection(connection);
+        }
+    }
 }

@@ -34,25 +34,33 @@ public class SimpleCanalClientExample {
     public static void main(String args[]) {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 3, 200, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>(3));
+//        executor.execute(() -> {
+//            log.info("execute youpin");
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            connectCanal("youpin", "heitan_db\\..*,heitan_pay\\..*");
+//        });
+//        executor.execute(() -> {
+//            log.info("execute jubao");
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            connectCanal("jubao", "black_probe_ms\\..*,heitan_open\\..*,wolf_data_db\\..*");
+//        });
         executor.execute(() -> {
-            log.info("execute youpin");
+            log.info("execute ods");
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            connectCanal("youpin", "heitan_db\\..*,heitan_pay\\..*");
+            connectCanal("ods", "heytime_ods\\..*");
         });
-        executor.execute(() -> {
-            log.info("execute jubao");
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            connectCanal("jubao", "black_probe_ms\\..*,heitan_open\\..*,wolf_data_db\\..*");
-        });
-
     }
 
     private static void connectCanal(String destination, String subscribe) {

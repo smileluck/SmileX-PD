@@ -39,4 +39,8 @@ public interface DataQuery {
      */
     List<IndexModel> queryIndex(String databaseName);
 
+    /**
+     * 执行sql
+     */
+    void querySql(String sql);
 }
