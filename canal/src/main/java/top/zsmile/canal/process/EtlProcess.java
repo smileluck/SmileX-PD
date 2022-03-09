@@ -9,7 +9,6 @@ import top.zsmile.core.model.TablesModel;
 import top.zsmile.core.query.MysqlDataQuery;
 import top.zsmile.core.utils.DataSourceUtils;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;

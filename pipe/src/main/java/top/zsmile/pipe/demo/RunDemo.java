@@ -20,6 +20,6 @@ public class RunDemo {
         channelPipeline2.addLast(new OutputHandler());
         channelPipeline2.run();
 
-        Integer.valueOf()
+//        Integer.valueOf()
     }
 }
