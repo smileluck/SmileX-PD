@@ -11,6 +11,8 @@ public class TablesModel {
 
     private String tableComment;
 
+    private String tableDesc;
+
     private String engine;
 
     private List<ColumnsModel> columnsModelList;

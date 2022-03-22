@@ -1664,7 +1664,7 @@
                                             <w:sz w:val="18"/>
                                             <w:sz-cs w:val="18"/>
                                         </w:rPr>
-                                        <w:t>数据列：</w:t>
+                                        <w:t>说明：</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -1687,6 +1687,14 @@
                                             <w:sz-cs w:val="18"/>
                                         </w:rPr>
                                     </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:rFonts w:ascii="宋体" w:h-ansi="宋体" w:cs="宋体" w:hint="fareast"/>
+                                            <w:sz w:val="18"/>
+                                            <w:sz-cs w:val="18"/>
+                                        </w:rPr>
+                                        <w:t>${table.tableDesc!""}</w:t>
+                                    </w:r>
                                 </w:p>
                             </w:tc>
                             <w:tc>

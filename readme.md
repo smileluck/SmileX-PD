@@ -8,7 +8,7 @@
 ### 文档支持
 - [x] word
 - [ ] html
-- [ ] markdown
+- [x] markdown
 
 ### 数据库支持
 - [x] Mysql
