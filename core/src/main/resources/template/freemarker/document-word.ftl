@@ -2098,7 +2098,7 @@
                                                 <w:rPr>
                                                     <w:rFonts w:hint="fareast"/>
                                                 </w:rPr>
-                                                <w:t>${column.columnComment}</w:t>
+                                                <w:t>${column.columnComment!""}</w:t>
                                             </w:r>
                                         </w:p>
                                     </w:tc>
