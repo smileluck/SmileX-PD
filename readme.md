@@ -65,3 +65,34 @@
 - 仅忽略表配置时：符合条件的丢弃，其余保留
 - 仅指定表配置时：符合条件的保留，其余丢弃
 
+
+## ftl数据结构
+```json
+{
+    "tables":[
+        { // TablesModel
+            "columnsModelList":[ //ColumnsModel
+                {
+                    "columnComment":"字段注释",
+                    "columnKey":"字段类型，PRI为主键",
+                    "columnName":"字段名称",
+                    "columnType":"字段数据信息",
+                    "dataLength":"字段数据长短",
+                    "dataType":"字段数据类型",
+                    "extra":"",
+                    "isNullable":"是否为空",
+                    "tableName":"所属表"
+                },
+            ],
+            "engine":"表引擎",
+            "tableComment":"表注释",
+            "tableName":"表名称"
+        }
+    ],
+    "db":{ // databaseModel
+        "describe":"数据库介绍",
+        "name":"文档名称",
+        "version":"版本信息"
+    }
+}
+```
