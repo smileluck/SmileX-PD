@@ -11,6 +11,12 @@ import java.util.stream.Collectors;
 
 public class ModelUtils {
 
+    /**
+     * 合并表和字段
+     * @param tableList
+     * @param columnList
+     * @return
+     */
     public static List mergeTableAndColumn(List<TablesModel> tableList, List<ColumnsModel> columnList) {
         Map<String, List<ColumnsModel>> collect = columnList.stream().collect(Collectors.groupingBy(ColumnsModel::getTableName));
         for (TablesModel tablesModel : tableList) {
@@ -25,6 +31,12 @@ public class ModelUtils {
     }
 
 
+    /**
+     * 合并表和索引
+     * @param tableList
+     * @param indexModelList
+     * @return
+     */
     public static List mergeTableAndIndex(List<TablesModel> tableList, List<IndexModel> indexModelList) {
         Map<String, List<IndexModel>> collect = indexModelList.stream().collect(Collectors.groupingBy(IndexModel::getTableName));
         for (TablesModel tablesModel : tableList) {

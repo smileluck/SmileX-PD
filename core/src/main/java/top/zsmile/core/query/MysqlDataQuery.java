@@ -13,6 +13,12 @@ import java.sql.Statement;
 import java.util.List;
 
 public class MysqlDataQuery implements DataQuery {
+
+    /**
+     *
+     * @param databaseName
+     * @return
+     */
     @Override
     public List<TablesModel> queryTables(String databaseName) {
         Connection connection = null;
